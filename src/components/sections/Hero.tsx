@@ -203,14 +203,7 @@ export const Hero = () => {
             </span>
           </motion.a>
           
-          <motion.span 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.9 }}
-            className="text-[8px] md:text-[11px] font-heading font-bold text-[#FAD600] uppercase tracking-[0.2em] md:tracking-[0.3em] opacity-95"
-          >
-            Boutique Experience
-          </motion.span>
+          
         </div>
       </div>
     </section>
