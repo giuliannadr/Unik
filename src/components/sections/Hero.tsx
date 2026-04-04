@@ -145,8 +145,7 @@ export const Hero = () => {
         transition={{ delay: 1.5, type: "spring" }}
         className="absolute bottom-20 right-8 md:bottom-20 md:right-20 z-30 pointer-events-none lg:pointer-events-auto scale-[0.6] md:scale-100 origin-bottom-right"
       >
-        <div className="relative flex items-center justify-center group cursor-pointer [-webkit-tap-highlight-color:transparent]">
-          <motion.div 
+        <div className="relative flex items-center justify-center group cursor-pointer [-webkit-tap-highlight-color:transparent] pr-6 md:pr-0">   <motion.div 
             animate={{ rotate: -360 }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
             className="absolute w-28 h-28 md:w-40 md:h-40 border border-white/20 rounded-full flex items-center justify-center"
