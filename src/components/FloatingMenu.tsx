@@ -52,7 +52,7 @@ export const FloatingMenu = () => {
 
   return (
     <LayoutGroup>
-      <div className="fixed top-6 right-6 md:top-10 md:right-10 z-[500]">
+      <div className="fixed top-6 right-6 md:top-10 md:right-10 z-[500] floating-menu-container">
         <AnimatePresence mode="wait">
           {!isOpen ? (
             // BURBUJA CERRADA: Amatista Glass con Dos Puntos de Luz

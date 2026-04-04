@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
@@ -21,6 +21,16 @@ const teamDetails = {
 
 export const AboutSection = () => {
   const [selectedProfile, setSelectedProfile] = useState<null | keyof typeof teamDetails>(null);
+
+  useEffect(() => {
+    if (selectedProfile) {
+      document.body.style.overflow = "hidden";
+      document.body.classList.add("modal-open");
+    } else {
+      document.body.style.overflow = "unset";
+      document.body.classList.remove("modal-open");
+    }
+  }, [selectedProfile]);
 
   return (
    <section id="nosotras" className="relative py-20 md:py-32 px-6 overflow-visible">    
@@ -151,14 +161,14 @@ export const AboutSection = () => {
               initial={{ scale: 0.9, y: 50, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.9, y: 50, opacity: 0 }}
-              className="relative bg-white w-full max-w-5xl rounded-[2.5rem] md:rounded-[4rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row h-auto lg:h-[600px] max-h-[90vh]"
+              className="relative bg-white w-full max-w-5xl rounded-[2.5rem] md:rounded-[4rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row h-[90vh] lg:h-[600px] z-[110]"
             >
               <button 
                 onClick={() => setSelectedProfile(null)}
                 className="absolute top-6 right-6 md:top-8 md:right-8 z-50 text-2xl md:text-3xl font-black text-[#3A2372] bg-white/80 backdrop-blur-md w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-transform"
               >✕</button>
 
-              <div className="w-full lg:w-1/2 h-64 sm:h-80 lg:h-full relative">
+              <div className="w-full lg:w-1/2 h-1/2 lg:h-full relative flex-none">
                 <Image 
                   src={teamDetails[selectedProfile].image} 
                   alt={selectedProfile} 
@@ -167,18 +177,18 @@ export const AboutSection = () => {
                 />
               </div>
 
-              <div className="w-full lg:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center bg-white">
-                <span className="text-[#FAD600] font-black uppercase tracking-widest text-xs mb-3 md:mb-4">
+              <div className="w-full lg:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center bg-white flex-1 min-h-0 overflow-hidden">
+                <span className="text-[#FAD600] font-black uppercase tracking-widest text-xs mb-3 md:mb-4 flex-none">
                   {teamDetails[selectedProfile].role}
                 </span>
-                <h3 className="text-5xl md:text-6xl lg:text-7xl font-black text-[#3A2372] tracking-tighter mb-4 md:mb-6 leading-none">
+                <h3 className="text-4xl md:text-5xl lg:text-7xl font-black text-[#3A2372] tracking-tighter mb-4 md:mb-6 leading-none flex-none">
                   {selectedProfile}
                 </h3>
-                <p className="text-xl md:text-2xl text-[#3A2372]/70 font-light italic leading-relaxed">
+                <p className="text-lg md:text-xl lg:text-2xl text-[#3A2372]/70 font-light italic leading-relaxed flex-1 overflow-hidden">
                   "{teamDetails[selectedProfile].bio}"
                 </p>
                 <div 
-                  className="mt-8 md:mt-10 h-3 md:h-4 w-20 md:w-24 rounded-full" 
+                  className="mt-8 md:mt-10 h-3 md:h-4 w-20 md:w-24 rounded-full flex-none" 
                   style={{ backgroundColor: teamDetails[selectedProfile].color }}
                 />
               </div>

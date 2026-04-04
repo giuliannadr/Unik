@@ -41,3 +41,18 @@
 .touch-violet {
   -webkit-tap-highlight-color: rgba(58, 35, 114, 0.4); /* Tu violeta con opacidad */
 }
+
+/* Ocultar menú flotante cuando un modal está abierto */
+body.modal-open .floating-menu-container {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+/* El menú debe volver suavemente cuando no hay modal */
+.floating-menu-container {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}

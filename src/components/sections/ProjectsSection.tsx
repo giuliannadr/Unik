@@ -96,10 +96,10 @@ export const ProjectsSection = () => {
     offset: ["start end", "end start"] 
   });
 
-  // FISICA DE SUAVIZADO: Evita el "temblor" sincronizando el scroll con un resorte
+  // FISICA DE SUAVIZADO: Evita el "temblor" sincronizando el scroll con un resorte más suave
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 70,   // Rigidez
-    damping: 30,     // Amortiguación (evita rebotes bruscos)
+    stiffness: 30,   // Aún más suave para evitar jitter
+    damping: 35,     // Alta amortiguación para estabilidad
     restDelta: 0.001
   });
 
@@ -113,7 +113,13 @@ export const ProjectsSection = () => {
   const textColor = useTransform(smoothProgress, [0, 0.3, 0.75, 0.9], ["#3A2372", "#3A2372", "#D1D1D1", "#FAD600"]);
 
   useEffect(() => {
-    document.body.style.overflow = selectedId ? "hidden" : "unset";
+    if (selectedId) {
+      document.body.style.overflow = "hidden";
+      document.body.classList.add("modal-open");
+    } else {
+      document.body.style.overflow = "unset";
+      document.body.classList.remove("modal-open");
+    }
   }, [selectedId]);
 
   const selectedProject = projects.find((p) => p.id === selectedId);
@@ -138,8 +144,8 @@ export const ProjectsSection = () => {
 
         {/* CARDS DE PROYECTOS */}
         <motion.div 
-          style={{ x, willChange: "transform" }} // Optimización crítica para mobile
-          className="flex gap-12 md:gap-20 z-10 relative h-full items-center"
+          style={{ x, translateZ: 0, backfaceVisibility: "hidden" }} // Forzamos GPU y ocultamos backface para estabilidad
+          className="flex gap-12 md:gap-20 z-10 relative h-full items-center transform-gpu"
         > 
           {projects.map((project, index) => (
             <motion.div
@@ -180,32 +186,32 @@ export const ProjectsSection = () => {
             />
             <motion.div 
               layoutId={`card-${selectedId}`}
-              className="relative bg-white w-full max-w-6xl rounded-[3rem] overflow-hidden flex flex-col max-h-[90vh] shadow-2xl z-10"
+              className="relative bg-white w-full max-w-6xl rounded-[3rem] overflow-hidden flex flex-col h-[90vh] shadow-2xl z-10"
             >
               {/* Botón Cerrar */}
               <button onClick={() => setSelectedId(null)} className="absolute top-6 right-6 bg-gray-100 p-3 rounded-full z-50">
                 <X size={20} className="text-[#3A2372]" />
               </button>
 
-              <div className="p-8 md:p-14 overflow-y-auto">
-                <div className="max-w-4xl mb-10">
-                  <div className="flex items-center gap-3 mb-4">
+              <div className="p-8 md:p-14 flex flex-col h-full overflow-hidden">
+                <div className="max-w-4xl flex-none mb-6">
+                  <div className="flex items-center gap-3 mb-2">
                     <span className="px-3 py-1 bg-[#FAD600] text-[#3A2372] text-[10px] font-black rounded-full uppercase">{selectedProject.year}</span>
                     <span className="text-[10px] font-bold text-gray-300 uppercase">{selectedProject.category}</span>
                   </div>
-                  <h3 className="text-4xl md:text-7xl font-black text-[#3A2372] uppercase leading-[0.85] tracking-tighter mb-4">{selectedProject.title}</h3>
-                  <p className="text-base md:text-xl text-gray-500 font-light">{selectedProject.detailedDescription}</p>
+                  <h3 className="text-3xl md:text-5xl lg:text-6xl font-black text-[#3A2372] uppercase leading-[0.85] tracking-tighter mb-3">{selectedProject.title}</h3>
+                  <p className="text-sm md:text-base text-gray-500 font-light line-clamp-2 md:line-clamp-3">{selectedProject.detailedDescription}</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 min-h-0">
                   {selectedProject.images.map((img, i) => (
-                    <div key={i} className="relative h-64 md:h-80 rounded-[2rem] overflow-hidden shadow-md">
+                    <div key={i} className="relative h-full w-full rounded-[2rem] overflow-hidden shadow-md min-h-[150px]">
                       <Image src={img} alt="Gallery" fill className="object-cover" />
                     </div>
                   ))}
                 </div>
-                <div className="pt-8 mt-8 border-t border-gray-100">
-                  <p className="text-lg md:text-2xl font-serif italic text-gray-400">"{selectedProject.slogan}"</p>
+                <div className="pt-6 mt-6 border-t border-gray-100 flex-none">
+                  <p className="text-base md:text-xl font-serif italic text-gray-400">"{selectedProject.slogan}"</p>
                 </div>
               </div>
             </motion.div>

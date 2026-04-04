@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { X, ArrowRight, Sparkles, Megaphone, PenTool, Globe } from "lucide-react";
 
@@ -66,6 +66,16 @@ const services = [
 
 export const Services = () => {
   const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
+
+  useEffect(() => {
+    if (selectedService) {
+      document.body.style.overflow = "hidden";
+      document.body.classList.add("modal-open");
+    } else {
+      document.body.style.overflow = "unset";
+      document.body.classList.remove("modal-open");
+    }
+  }, [selectedService]);
 
   // Configuración de WhatsApp
   const phone = "5491158765411";
@@ -161,7 +171,7 @@ export const Services = () => {
         {selectedService && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedService(null)} className="absolute inset-0 bg-[#3A2372]/95 backdrop-blur-lg" />
-            <motion.div layoutId={`bento-${selectedService.id}`} className="relative bg-white rounded-[3rem] p-10 md:p-14 max-w-2xl w-full z-[110] shadow-2xl overflow-hidden">
+            <motion.div layoutId={`bento-${selectedService.id}`} className="relative bg-white rounded-[3rem] p-10 md:p-14 max-w-2xl w-full z-[110] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
               <button onClick={() => setSelectedService(null)} className="absolute top-8 right-8 text-[#3A2372]/40 hover:text-[#3A2372] z-20 w-10 h-10 rounded-full bg-[#F4F4F4] flex items-center justify-center hover:rotate-90 transition-all">
                 <X size={20} />
               </button>
