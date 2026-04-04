@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 243 243 243;
+  --foreground: 64 53 111;
+}
+
+@layer base {
+  html {
+    @apply overflow-x-clip;
+  }
+  body {
+    background-color: theme('colors.unik-surface');
+    color: theme('colors.unik-primary');
+    @apply antialiased selection:bg-unik-accent selection:text-unik-primary overflow-x-clip;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tighter font-heading;
+  }
+  
+  .font-subheading {
+    font-family: var(--font-playfair);
+  }
+}
+
+@layer components {
+  .noise-overlay {
+    @apply pointer-events-none fixed inset-0 z-50 h-full w-full opacity-[0.03];
+    background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+    background-repeat: repeat;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-700 ease-[0.16, 1, 0.3, 1] hover:shadow-unik-soft hover:scale-[1.02];
+  }
+}
+
+.touch-violet {
+  -webkit-tap-highlight-color: rgba(58, 35, 114, 0.4); /* Tu violeta con opacidad */
+}
