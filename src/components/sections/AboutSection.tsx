@@ -88,7 +88,7 @@ export const AboutSection = () => {
           </div>
 
         {/* Columna de Imagen */}
-<div className="lg:w-6/12 w-full mt-10 lg:mt-0">
+<div className="lg:w-6/12 w-full -mt-10 lg:mt-0">
   <motion.div 
     initial={{ opacity: 0, scale: 0.9 }} 
     whileInView={{ opacity: 1, scale: 1 }} 
