@@ -3,7 +3,7 @@
 import { motion, useTransform, useScroll, AnimatePresence, useSpring } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import { X, ArrowUpRight } from "lucide-react";
+import { X, ArrowUpRight, Maximize2 } from "lucide-react";
 
 interface Project {
   id: number;
@@ -77,17 +77,26 @@ export const ProjectsSection = () => {
     [0, 0.08, 0.70, 0.80],
     ["#3A2372", "#D1D1D1", "#D1D1D1", "#FAD600"]
   );
+// ── Texto MOBILE: Desaparece casi al inicio (0.05) y vuelve al final (0.85)
+  const mobTextOpacity = useTransform(
+    smoothProgress, 
+    [0, 0.05, 0.45, 0.85], 
+    [1, 0.08, 0.08, 1]
+  );
 
-  // ── Texto MOBILE: los proyectos aparecen antes y el amarillo llega antes
-  const mobTextOpacity = useTransform(smoothProgress, [0, 0.07, 0.62, 0.72], [1, 0.08, 0.08, 1]);
-  const mobTextColor   = useTransform(
+  const mobTextColor = useTransform(
     smoothProgress,
-    [0, 0.07, 0.62, 0.74],
+    [0, 0.05, 0.85, 0.95], // El cambio al amarillo es súbito y solo al final
     ["#3A2372", "#D1D1D1", "#D1D1D1", "#FAD600"]
   );
 
-  // Mobile: columna única de tarjetas — aparece antes, sale antes
- const mobileCardsY = useTransform(smoothProgress, [0, 0.60], ["80vh", "-300vh"]);
+  // ── Tarjetas MOBILE: Empiezan a subir antes (0.10) y tienen más recorrido
+  const mobileCardsY = useTransform(
+    smoothProgress, 
+    [0.10, 0.85], 
+    ["100vh", "-380vh"] // -380vh asegura que terminen de pasar todas
+  );
+
   useEffect(() => {
     if (selectedId) {
       document.body.style.overflow = "hidden";
@@ -97,8 +106,10 @@ export const ProjectsSection = () => {
       document.body.classList.remove("modal-open");
     }
   }, [selectedId]);
-
   const selectedProject = projects.find((p) => p.id === selectedId);
+
+ 
+  const [fullscreenIdx, setFullscreenIdx] = useState<number | null>(null);
 
   return (
     <section id="proyectos" ref={targetRef} className="relative h-[650vh] bg-[#F4F4F4]">
@@ -197,50 +208,148 @@ export const ProjectsSection = () => {
       </div>
 
       {/* Modal compartido */}
-      <AnimatePresence>
-        {selectedId && selectedProject && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              onClick={() => setSelectedId(null)}
-              className="absolute inset-0 bg-[#3A2372]/98 backdrop-blur-3xl"
-            />
-            <motion.div
-              layoutId={`card-${selectedId}`}
-              className="relative bg-white w-full max-w-6xl rounded-[2rem] md:rounded-[3rem] overflow-hidden flex flex-col h-[85vh] shadow-2xl z-10"
+   {/* ... (Todo el código anterior de imports y constantes se mantiene igual) ... */}
+
+{/* POPUP NIVEL 1: GRID AUTO-ADAPTABLE */}
+{/* POPUP NIVEL 1: GRID AUTO-ADAPTABLE */}
+<AnimatePresence>
+  {selectedId && selectedProject && (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+      <motion.div
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: 1 }} 
+        exit={{ opacity: 0 }}
+        onClick={() => setSelectedId(null)}
+        className="absolute inset-0 bg-[#3A2372]/98 backdrop-blur-3xl"
+      />
+      
+      <motion.div
+        layoutId={`card-${selectedId}`}
+        className="relative bg-white w-full max-w-6xl rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl z-10 flex flex-col h-full max-h-[90vh]"
+      >
+        <button 
+          onClick={() => setSelectedId(null)} 
+          className="absolute top-6 right-6 bg-gray-100 p-3 rounded-full z-50 hover:bg-[#FAD600] transition-all active:scale-90 shadow-sm"
+        >
+          <X size={20} className="text-[#3A2372]" />
+        </button>
+
+        <div className="flex flex-col h-full">
+          {/* Header con Padding */}
+          <div className="p-8 md:p-14 pb-6 flex-none">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="px-3 py-1 bg-[#FAD600] text-[#3A2372] text-[11px] font-black rounded-full uppercase tracking-tighter">
+                {selectedProject.year}
+              </span>
+              <span className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em]">
+                {selectedProject.category}
+              </span>
+            </div>
+            <h3 className="text-4xl md:text-6xl font-black text-[#3A2372] uppercase tracking-tighter mb-3 leading-[0.85]">
+              {selectedProject.title}
+            </h3>
+            <p className="text-sm md:text-lg text-gray-500 max-w-2xl leading-relaxed">
+              {selectedProject.detailedDescription}
+            </p>
+          </div>
+
+          {/* GRID INTELIGENTE CON STAGGER ANIMATION */}
+          <div className="flex-1 min-h-0 w-full overflow-y-auto px-8 md:px-14 pb-8">
+            <motion.div 
+              initial="hidden"
+              animate="show"
+              variants={{
+                show: { transition: { staggerChildren: 0.1 } } // Aparecen de a una
+              }}
+              className="flex flex-wrap gap-4 w-full h-full"
             >
-              <button
-                onClick={() => setSelectedId(null)}
-                className="absolute top-6 right-6 bg-gray-100 p-3 rounded-full z-50 hover:bg-[#FAD600] transition-colors"
-              >
-                <X size={20} className="text-[#3A2372]" />
-              </button>
-
-              <div className="p-6 md:p-14 flex flex-col h-full overflow-y-auto">
-                <div className="max-w-4xl flex-none mb-6">
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="px-3 py-1 bg-[#FAD600] text-[#3A2372] text-[10px] font-black rounded-full uppercase">{selectedProject.year}</span>
-                    <span className="text-[10px] font-bold text-gray-300 uppercase">{selectedProject.category}</span>
-                  </div>
-                  <h3 className="text-3xl md:text-6xl font-black text-[#3A2372] uppercase leading-[0.85] tracking-tighter mb-4">{selectedProject.title}</h3>
-                  <p className="text-sm md:text-lg text-gray-500 font-light max-w-2xl">{selectedProject.detailedDescription}</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-none">
-                  {selectedProject.images.map((img, i) => (
-                    <div key={i} className="relative aspect-video md:aspect-square rounded-[1.5rem] overflow-hidden shadow-md">
-                      <Image src={img} alt="Gallery" fill className="object-cover" />
+              {selectedProject.images.map((img, i) => (
+                <motion.div 
+                  key={i} 
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    show: { opacity: 1, y: 0 }
+                  }}
+                  onClick={() => setFullscreenIdx(i)} // Llama al estado de React
+                  className="relative group cursor-zoom-in overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] bg-gray-100 shadow-inner flex-grow"
+                  style={{ 
+                    flexBasis: selectedProject.images.length === 2 ? '45%' : '30%',
+                    minHeight: '280px',
+                    maxHeight: '500px' // Evita que una sola imagen sea gigante
+                  }}
+                  whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                >
+                  <Image 
+                    src={img} 
+                    alt={`Gallery item ${i}`} 
+                    fill 
+                    className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-[#3A2372]/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <div className="bg-white/20 backdrop-blur-xl p-4 rounded-full border border-white/30 scale-90 group-hover:scale-100 transition-transform">
+                      <Maximize2 className="text-white" size={28} />
                     </div>
-                  ))}
-                </div>
-                <div className="pt-8 mt-8 border-t border-gray-100 pb-4">
-                  <p className="text-xl md:text-2xl font-serif italic text-gray-400">"{selectedProject.slogan}"</p>
-                </div>
-              </div>
+                  </div>
+                </motion.div>
+              ))}
             </motion.div>
           </div>
-        )}
-      </AnimatePresence>
+
+          {/* Footer con Slogan */}
+          <div className="px-8 md:px-14 py-8 bg-gray-50/50 border-t border-gray-100 flex-none">
+            <p className="text-xl md:text-3xl font-serif italic text-[#3A2372]/30 leading-none">
+              "{selectedProject.slogan}"
+            </p>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  )}
+</AnimatePresence>
+{/* POPUP NIVEL 2: IMAGEN FULLSCREEN */}
+<AnimatePresence>
+  {fullscreenIdx !== null && selectedProject && (
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-0 md:p-10">
+      {/* Fondo oscuro para el segundo nivel */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={() => setFullscreenIdx(null)}
+        className="absolute inset-0 bg-black/95 backdrop-blur-sm"
+      />
+
+      {/* Botón de cierre */}
+      <button
+        onClick={() => setFullscreenIdx(null)}
+        className="absolute top-8 right-8 z-[210] bg-white/10 hover:bg-white/20 p-4 rounded-full text-white backdrop-blur-md transition-all active:scale-90"
+      >
+        <X size={24} />
+      </button>
+
+      {/* Contenedor de la Imagen */}
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        transition={{ type: "spring", damping: 25, stiffness: 200 }}
+        className="relative w-full h-full max-w-7xl flex items-center justify-center"
+      >
+        <div className="relative w-full h-[80vh]">
+          <Image
+            src={selectedProject.images[fullscreenIdx]}
+            alt="Fullscreen view"
+            fill
+            className="object-contain" // Para que no se corte la imagen
+            quality={100}
+            priority
+          />
+        </div>
+      </motion.div>
+    </div>
+  )}
+</AnimatePresence>
     </section>
   );
 };
