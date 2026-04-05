@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Be_Vietnam_Pro, Playfair_Display, Inter } from "next/font/google";
-import Script from "next/script"; // Importamos el componente de Next
+import Script from "next/script";
 import "./globals.css";
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { FloatingMenu } from "@/components/FloatingMenu";
@@ -15,6 +15,14 @@ export const metadata: Metadata = {
   description: "Transformamos ideas en experiencias digitales de alto impacto. Especialistas en branding, desarrollo web y estrategias de contenido.",
   keywords: ["Agencia de publicidad", "Diseño Web", "Branding", "Marketing Digital", "Buenos Aires"],
   authors: [{ name: "Unik Agency" }],
+  
+  // LOGO DE LA PESTAÑA (Favicon)
+  icons: {
+    icon: "/Unik-logo.png",
+    shortcut: "/Unik-logo.png",
+    apple: "/Unik-logo.png",
+  },
+
   openGraph: {
     title: "Unik | Agencia de Publicidad",
     description: "Creatividad y estrategia para marcas que buscan destacar.",
@@ -22,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "Unik Agency",
     images: [
       {
-        url: "/og-image.jpg", // Asegurate de tener una imagen de 1200x630 en /public
+        url: "/og-image.jpg", 
         width: 1200,
         height: 630,
         alt: "Unik Agencia de Publicidad",
