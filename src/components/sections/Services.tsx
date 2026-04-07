@@ -23,7 +23,7 @@ const services = [
     details: "Desarrollamos contenido estratégico adaptado a la esencia de tu marca.",
     image: "/Contenido.png",
     titleClass: "text-4xl md:text-6xl lg:text-7xl", 
-    descClass: "text-xs md:text-sm whitespace-nowrap" 
+    descClass: "text-sm md:text-base" // Eliminado whitespace-nowrap
   },
   {
     id: 2,
@@ -35,7 +35,7 @@ const services = [
     details: "Desde el logo hasta la voz de la marca. Creamos sistemas visuales coherentes.",
     image: "/Branding.png",
     titleClass: "text-2xl md:text-3xl",
-    descClass: "text-[10px] md:text-xs"
+    descClass: "text-xs"
   },
   {
     id: 3,
@@ -47,7 +47,7 @@ const services = [
     details: "Analizamos el mercado para trazar la hoja de ruta ideal.",
     image: "/Estrategia2.png",
     titleClass: "text-2xl md:text-3xl",
-    descClass: "text-[10px] md:text-xs"
+    descClass: "text-xs"
   },
   {
     id: 4,
@@ -59,7 +59,7 @@ const services = [
     details: "Transformamos seguidores en embajadores apasionados de tu marca.",
     image: "/Community.webp",
     titleClass: "text-3xl md:text-4xl lg:text-5xl",
-    descClass: "text-[11px] md:text-sm max-w-md",
+    descClass: "text-xs md:text-sm max-w-md",
     imgClass: "scale-90 md:scale-75 origin-center" 
   }
 ];
@@ -70,14 +70,11 @@ export const Services = () => {
   useEffect(() => {
     if (selectedService) {
       document.body.style.overflow = "hidden";
-      document.body.classList.add("modal-open");
     } else {
       document.body.style.overflow = "unset";
-      document.body.classList.remove("modal-open");
     }
   }, [selectedService]);
 
-  // Configuración de WhatsApp
   const phone = "5491158765411";
   const getWhatsappUrl = (serviceName?: string) => {
     const baseMsg = "¡Hola UNIK! Me interesa potenciar mi marca.";
@@ -96,7 +93,7 @@ export const Services = () => {
           {/* TEXTO IZQUIERDA */}
           <div className="lg:col-span-4 flex flex-col justify-start pt-2 lg:sticky lg:top-24">
             <motion.span initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} className="text-[#FAD600] font-heading font-black uppercase tracking-[0.4em] text-[10px] mb-3 block">
-              Capabilities
+              Solutions
             </motion.span>
             
             <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} className="text-5xl md:text-6xl font-heading font-black text-[#3A2372] leading-[0.85] tracking-tighter mb-6">
@@ -134,12 +131,12 @@ export const Services = () => {
                   onClick={() => setSelectedService(service)}
                   whileHover={{ y: -10, scale: 1.01 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className={`relative ${service.size} p-8 lg:p-10 rounded-[2.5rem] cursor-pointer group flex flex-col justify-between border border-black/5 shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden min-h-[240px] md:min-h-[280px]`}
+                  className={`relative ${service.size} p-6 md:p-10 rounded-[2.5rem] cursor-pointer group flex flex-col justify-between border border-black/5 shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden min-h-[300px]`}
                 >
                   <div className="absolute inset-0 z-0">
                     <Image src={service.image} alt={service.title} fill className="object-cover transition-transform duration-1000 group-hover:scale-105 grayscale-[0.2] group-hover:grayscale-0" />
                     <div className={`absolute inset-0 ${service.bg} opacity-40 transition-opacity group-hover:opacity-20`} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-90 transition-opacity" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-95 transition-opacity" />
                   </div>
 
                   <div className="flex justify-between items-start z-10 relative">
@@ -152,10 +149,10 @@ export const Services = () => {
                   </div>
 
                   <div className="z-10 mt-auto relative">
-                    <h3 className={`text-white ${service.titleClass} font-heading font-black mb-2 tracking-tighter leading-[0.85] uppercase drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]`}>
+                    <h3 className={`text-white ${service.titleClass} font-heading font-black mb-3 tracking-tighter leading-[0.9] uppercase drop-shadow-[0_4px_12px_rgba(0,0,0,0.4)]`}>
                       {service.title}
                     </h3>
-                    <p className={`text-white/90 ${service.descClass} font-medium uppercase tracking-wider line-clamp-2`}>
+                    <p className={`text-white/90 ${service.descClass} font-medium uppercase tracking-wider leading-snug`}>
                       {service.description}
                     </p>
                   </div>
@@ -171,26 +168,26 @@ export const Services = () => {
         {selectedService && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedService(null)} className="absolute inset-0 bg-[#3A2372]/95 backdrop-blur-lg" />
-            <motion.div layoutId={`bento-${selectedService.id}`} className="relative bg-white rounded-[3rem] p-10 md:p-14 max-w-2xl w-full z-[110] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
-              <button onClick={() => setSelectedService(null)} className="absolute top-8 right-8 text-[#3A2372]/40 hover:text-[#3A2372] z-20 w-10 h-10 rounded-full bg-[#F4F4F4] flex items-center justify-center hover:rotate-90 transition-all">
+            <motion.div layoutId={`bento-${selectedService.id}`} className="relative bg-white rounded-[3rem] p-8 md:p-14 max-w-2xl w-full z-[110] shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+              <button onClick={() => setSelectedService(null)} className="absolute top-6 right-6 text-[#3A2372]/40 hover:text-[#3A2372] z-20 w-10 h-10 rounded-full bg-[#F4F4F4] flex items-center justify-center hover:rotate-90 transition-all">
                 <X size={20} />
               </button>
               
               <div className="relative z-10">
-                <div className="mb-8 scale-[1.5] origin-left drop-shadow-md w-fit">
+                <div className="mb-6 scale-[1.5] origin-left drop-shadow-md w-fit">
                   {selectedService.icon}
                 </div>
-                <h3 className="text-5xl md:text-6xl font-heading font-black text-[#3A2372] mb-5 uppercase tracking-tighter leading-none">
+                <h3 className="text-4xl md:text-6xl font-heading font-black text-[#3A2372] mb-4 uppercase tracking-tighter leading-none">
                   {selectedService.title}
                 </h3>
-                <p className="text-[#3A2372]/70 text-xl font-light leading-relaxed mb-12 max-w-lg">
+                <p className="text-[#3A2372]/70 text-lg md:text-xl font-light leading-relaxed mb-10 max-w-lg">
                   {selectedService.details}
                 </p>
                 <a 
                   href={getWhatsappUrl(selectedService.title)} 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-3 bg-[#25D366] text-white px-8 py-5 rounded-2xl font-heading font-black text-[11px] tracking-widest w-full hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all uppercase"
+                  className="flex items-center justify-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-2xl font-heading font-black text-[11px] tracking-widest w-full hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all uppercase"
                 >
                   <WhatsAppLogo className="w-5 h-5" />
                   Consultar por este servicio
