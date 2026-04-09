@@ -135,7 +135,7 @@ export const ProjectsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: idx * 0.1 }}
-              className="group relative aspect-[4/5] w-full overflow-hidden rounded-[3rem] bg-white shadow-xl cursor-pointer"
+              className="group relative aspect-video w-full overflow-hidden rounded-[3rem] bg-white shadow-xl cursor-pointer"
             >
               <Image
                 src={project.imageUrl}
@@ -171,7 +171,7 @@ export const ProjectsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, delay: idx * 0.1 + 0.15 }}
-              className="group relative aspect-[4/5] w-full overflow-hidden rounded-[3rem] bg-white shadow-xl cursor-pointer"
+              className="group relative aspect-video w-full overflow-hidden rounded-[3rem] bg-white shadow-xl cursor-pointer"
             >
               <Image
                 src={project.imageUrl}
